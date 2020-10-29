@@ -99,10 +99,13 @@ RUN apt-get install -y --no-install-recommends --fix-missing \
     ${PYTHON}-dev \
     ${PYTHON}-distutils
 
-RUN curl -fSsL https://bootstrap.pypa.io/get-pip.py | python3
+RUN curl -fSsL https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+RUN ${PYTHON} get-pip.py --force-reinstall
 RUN ${PYTHON} -m pip --no-cache-dir install --upgrade \
     pip \
     setuptools
+
+RUN rm get-pip.py
 
 # Some TF tools expect a "python" binary
 RUN ln -sf $(which ${PYTHON}) /usr/local/bin/python && \
