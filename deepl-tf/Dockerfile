@@ -86,25 +86,29 @@ RUN ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/lib
 
 # See http://bugs.python.org/issue19846
 ENV LANG C.UTF-8
+ARG PYTHON=python3.8
 
-# Update python version
-RUN add-apt-repository -y ppa:deadsnakes/ppa
-RUN apt-get update -y && apt-get install -y --no-install-recommends --fix-missing \
-        python3.8 \
-        python3.8-dev \
-        python3.8-distutils
+RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
+    curl \
+    software-properties-common
 
-RUN python3.8 -m pip --no-cache-dir install six
+RUN add-apt-repository ppa:deadsnakes/ppa
 
-RUN curl -fSsL https://bootstrap.pypa.io/get-pip.py | python3.8
-RUN python3.8 -m pip --no-cache-dir install --upgrade \
-        pip \
-        setuptools
+RUN apt-get install -y --no-install-recommends --fix-missing \
+    ${PYTHON} \
+    ${PYTHON}-dev \
+    ${PYTHON}-distutils
 
-RUN ln -sf $(which python3.8) /usr/local/bin/python && \
-    ln -sf $(which python3.8) /usr/local/bin/python3 && \
-    ln -sf $(which python3.8) /usr/bin/python && \
-    ln -sf $(which python3.8) /usr/bin/python3
+RUN curl -fSsL https://bootstrap.pypa.io/get-pip.py | python3
+RUN ${PYTHON} -m pip --no-cache-dir install --upgrade \
+    pip \
+    setuptools
+
+# Some TF tools expect a "python" binary
+RUN ln -sf $(which ${PYTHON}) /usr/local/bin/python && \
+    ln -sf $(which ${PYTHON}) /usr/local/bin/python3 && \
+    ln -sf $(which ${PYTHON}) /usr/bin/python && \
+    ln -sf $(which ${PYTHON}) /usr/bin/python3
 
 # Install AWS cli
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -q awscliv2.zip
