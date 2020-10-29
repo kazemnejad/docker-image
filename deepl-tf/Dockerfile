@@ -88,10 +88,6 @@ RUN ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/lib
 ENV LANG C.UTF-8
 ARG PYTHON=python3.8
 
-RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
-    curl \
-    software-properties-common
-
 RUN add-apt-repository ppa:deadsnakes/ppa
 
 RUN apt-get install -y --no-install-recommends --fix-missing \
@@ -163,6 +159,3 @@ RUN python3.8 -m nltk.downloader all
 RUN python3.8 -m pip install --no-cache-dir jupyter_http_over_ws ipykernel==5.1.1 nbformat==4.4.0
 
 RUN jupyter serverextension enable --py jupyter_http_over_ws
-
-COPY bashrc /etc/bash.bashrc
-RUN chmod a+rwx /etc/bash.bashrc
