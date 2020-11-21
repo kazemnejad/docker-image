@@ -16,10 +16,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
         build-essential libfreetype6-dev \
         pkg-config
 
-RUN apt-add-repository multiverse \
+
+RUN sed -i "/^# deb.*multiverse/ s/^# //" /etc/apt/sources.list \
         && apt-get update \
-        && apt-get install -y --no-install-recommends --fix-missing \
-            fontconfig ttf-mscorefonts-installer \
+        && apt-get install -y --no-install-recommends --fix-missing fontconfig ttf-mscorefonts-installer \
         && update-ms-fonts && fc-cache -f -v
 
 # Install AWS command
