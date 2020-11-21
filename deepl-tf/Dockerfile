@@ -17,10 +17,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing \
         pkg-config
 
 
-RUN sed -i "/^# deb.*multiverse/ s/^# //" /etc/apt/sources.list \
-        && apt-get update \
-        && apt-get install -y --no-install-recommends --fix-missing fontconfig ttf-mscorefonts-installer \
-        && update-ms-fonts && fc-cache -f -v
+# RUN sed -i "/^# deb.*multiverse/ s/^# //" /etc/apt/sources.list \
+#         && apt-get update \
+#         && apt-get install -y --no-install-recommends --fix-missing fontconfig ttf-mscorefonts-installer \
+#         && update-ms-fonts && fc-cache -f -v
 
 # Install AWS command
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
